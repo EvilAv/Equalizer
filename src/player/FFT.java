@@ -5,7 +5,7 @@ import static java.lang.Math.*;
 
 public class FFT {
     // AVal - массив анализируемых данных, Nvl - длина массива должна быть кратна степени 2.
-// FTvl - массив полученных значений, Nft - длина массива должна быть равна Nvl.
+    // FTvl - массив полученных значений, Nft - длина массива должна быть равна Nvl.
 
     final double TwoPi = 6.283185307179586;
     private short[] AVal;
@@ -17,6 +17,7 @@ public class FFT {
 
     }
 
+    // алгоритм быстрого преобразования Фурье
     void FFTAnalysis(final short[] input, int size) {
 
         this.AVal = input;
@@ -81,6 +82,7 @@ public class FFT {
         }
     }
 
+    // получить результат работы алгоритма
     public double[] getFFTData(){
         return FTvl;
     }

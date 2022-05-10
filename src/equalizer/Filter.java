@@ -8,19 +8,22 @@ public class Filter implements Callable<short[]> {
     protected short[] outputSignal;
     protected double gain;
 
+    // конструктор для фильтра
     public Filter(final int lenghtOfInputSignal){
         gain = 1;
         this.outputSignal = new short[lenghtOfInputSignal];
     }
 
-
+    // настравиваем параметры фильтра (коэффициенты, их число, входной сигнал)
     public void settings(final double[] coefsFilter, final short countOfCoefs, final short[] inputSignal) {
         this.inputSignal = inputSignal;
         this.coefsFilter =  coefsFilter;
         this.countOfCoefs = countOfCoefs;
+        // формируем массив для выходного сигнала
         this.outputSignal = new short[inputSignal.length];
     }
 
+    // методо описывает алгоритм реализации свертки
     private short[] svertka() {
         int multiplication;
         for(int i = 0; i <  inputSignal.length - FilterInfo.COUNT_OF_COEFS; i++) {
@@ -32,9 +35,10 @@ public class Filter implements Callable<short[]> {
         return this.outputSignal;
     }
 
+    // устанавливаем коэффициент усиления
     public void setGain(float d) {
-        float temo = (float) Math.pow(10, (d / 10.0));
-        this.gain = temo;
+        // преобразуем децибелы в мощность сигнала
+        this.gain = (float) Math.pow(10, (d / 10.0));
     }
 
     public double getGain() {

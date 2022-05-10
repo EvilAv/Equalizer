@@ -37,18 +37,25 @@ public class AudioPlayer implements LineListener{
 
 
 
+    // конструктор
     public AudioPlayer(File musicFile) throws UnsupportedAudioFileException,
             IOException, InterruptedException, LineUnavailableException {
+        // читаем файл
         ReadMusicFile readFile = new ReadMusicFile(musicFile);
+        // задаем буфер для воспроизведения файла, обращающийся к микшеру
         this.sourceDataLine =  readFile.getSourceDataLine();
+        // задаем входной звуковой поток
         this.ais = readFile.getAudioInputStream();
         this.buff = new byte[this.BUFF_SIZE];
         this.sampleBuff = new short[BUFF_SIZE / 2];
+        // инициализируем эффекты
         this.delay = new Delay();
         this.vibrato = new Vibrato();
+        // отключаем эффекты, чтобы изначально воспроизводить чисытй звук
         this.isDelay = false;
         this.isVibrato = false;
         this.vibratoCoef = 1.0;
+        // инициализируем класс эквалайзера
         this.equalizer = new Equalizer(BUFF_SIZE / 2);
         AudioFileFormat aff = new AudioFileFormat();
         format = new AudioFormat((float)aff.getSampleRate(),
@@ -60,6 +67,7 @@ public class AudioPlayer implements LineListener{
     }
 
 
+    // воспроизводим звук
     public void play() {
         try{
             this.sourceDataLine.open(this.format);
@@ -99,39 +107,46 @@ public class AudioPlayer implements LineListener{
         }
     }
 
-
+    // задаем эффект Дилей
     private void delay(short[] inputSamples) {
         this.delay.setInputSampleStream(inputSamples);
         this.delay.createEffect();
     }
 
+    // проверяем активен ли эффект Дилей
     public boolean delayIsActive() {
         return this.isDelay;
     }
 
+    // отключаем/подключаем эффект Дилей
     public void setDelay(boolean b) {
         this.isDelay = b;
     }
 
+    // задаем эффект Вибрато
     private void vibrato(short[] inputSamples) {
         this.vibrato.setVibratoCoef(this.vibratoCoef);
         this.vibrato.setInputSampleStream(inputSamples);
         this.vibrato.createEffect();
     }
 
+    // проверяем активен ли эффект Вибрато
     public boolean vibratoIsActive() {
         return this.isVibrato;
     }
 
+    // отключаем/подключаем эффект Вибрато
     public void setVibrato(boolean b) {
         this.isVibrato = b;
     }
 
+    // задаем коэффициент для эффекта Вибрато
     public void setVibratoCoef(double c) {
         this.vibratoCoef = c;
     }
 
 
+    // присотанавливаем воспроизведение
     private void stop() {
         if(pause) {
             for(;;) {
@@ -154,10 +169,12 @@ public class AudioPlayer implements LineListener{
         return this.pause;
     }
 
+    // устанавливаем громкость
     public void setVolume(double volume) {
         this.volume = volume;
     }
 
+    // получаем значение громкости
     public double getVolume() {
         return this.volume;
     }
@@ -171,6 +188,7 @@ public class AudioPlayer implements LineListener{
         return this.sampleBuff;
     }
 
+    // преобразуем массив байтов в массив отсчетов
     private void ByteArrayToSamplesArray() {
         for(int i = 0, j = 0; i < this.buff.length; i += 2 , j++) {
             this.sampleBuff[j] = (short) (0.5 *  (ByteBuffer.wrap(this.buff, i, 2).order(
@@ -178,6 +196,7 @@ public class AudioPlayer implements LineListener{
         }
     }
 
+    // преобразуем массив отсчетов в массив байтов
     private void SampleArrayByteArray() {
         for(int i = 0, j = 0; i < this.sampleBuff.length && j < (this.buff.length); i++, j += 2 ) {
             this.buff[j] = (byte)(this.sampleBuff[i]);
@@ -190,6 +209,7 @@ public class AudioPlayer implements LineListener{
         return this.equalizer;
     }
 
+    // заврешаем воспроизведение звука и заврешаем все системные процессы связанные с ним
     public void close() {
         if(this.ais != null)
             try {

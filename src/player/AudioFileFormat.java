@@ -6,6 +6,7 @@ public class AudioFileFormat {
     int channels;
     double sampleRate;
 
+    // класс описывает формат и некоторые натсройки файла, методы возвращют указанные значения
     public AudioFileFormat() {
         this.bigEndian = false;
         this.signed = true;

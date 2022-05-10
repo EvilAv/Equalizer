@@ -10,6 +10,7 @@ public class ReadMusicFile{
     private SourceDataLine sdl;
     public ReadMusicFile(File filePath) throws UnsupportedAudioFileException, IOException, InterruptedException, LineUnavailableException {
 
+        // считываем файл, если он существует
         if(filePath != null) {
             this.ais = AudioSystem.getAudioInputStream(filePath);
             AudioFormat format = ais.getFormat();
@@ -19,14 +20,17 @@ public class ReadMusicFile{
 
     }
 
+    // возвращаем выходной сигнал
     public byte[] getOutputSignal() {
         return this.outputSignal;
     }
 
+    // возвращаем входной поток данных
     public AudioInputStream getAudioInputStream() {
         return this.ais;
     }
 
+    // закрываем входной поток данных
     public void closeAudioInputStream() {
         try {
             this.ais.close();
@@ -34,6 +38,7 @@ public class ReadMusicFile{
         }
     }
 
+    // получаем строку данных, обращающуюся к микшеру
     public SourceDataLine getSourceDataLine() {
         return this.sdl;
     }

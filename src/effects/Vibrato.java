@@ -4,8 +4,8 @@ public class Vibrato extends Effect {
 
     private short maxAmplitude;
     private short minAmplitude;
-    private static final short standartMax = 3500;
-    private static final short standartMin = -3500;
+    private static final short standartMax = 350;
+    private static final short standartMin = -350;
     private double coef;
 
     public Vibrato() {
@@ -17,9 +17,12 @@ public class Vibrato extends Effect {
         this.inputAudioStream = inputAudioStream;
     }
 
+    // реализуем эффект Вибрато
     @Override
     public synchronized short[] createEffect() {
         this.setMaxAndMinAmpl();
+        // если исходный сигнал опускается выше или ниже заданных границ,то приравниваем амплитуды к значению границы
+        // иными словами как бы обрезаем синусоиду
         for(int i = 0; i < this.inputAudioStream.length; i ++) {
             if(this.inputAudioStream[i] > this.maxAmplitude)
                 this.inputAudioStream[i] = (this.maxAmplitude);
@@ -29,6 +32,7 @@ public class Vibrato extends Effect {
         return this.inputAudioStream;
     }
 
+    // рассчитываем максимальную и минимальную амплитуду
     private void  setMaxAndMinAmpl() {
         this.maxAmplitude = (short) (Vibrato.standartMax * this.coef);
         this.minAmplitude = (short) (Vibrato.standartMin * this.coef);

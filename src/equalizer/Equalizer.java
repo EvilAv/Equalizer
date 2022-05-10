@@ -13,6 +13,7 @@ public class Equalizer {
     private final int lenghtOfInputSignal;
     ExecutorService pool;
 
+    // конструктор класса, задает размер входящего сигнла и количество потоков
     public Equalizer(final int lenghtOfInputSignal) {
 
         pool = Executors.newFixedThreadPool(COUNT_OF_THREADS);
@@ -20,6 +21,7 @@ public class Equalizer {
         this.createFilters();
     }
 
+    // формируем входной и выходной сигналы
     public void setInputSignal(short[] inputSignal) {
         this.inputSignal = inputSignal;
         this.outputSignal = new short[this.lenghtOfInputSignal];
@@ -41,7 +43,7 @@ public class Equalizer {
                 FilterInfo.COUNT_OF_COEFS, this.inputSignal);
     }
 
-
+    // создаем набор нужных фильтров
     private void createFilters() {
         this.filters = new Filter [Equalizer.COUNT_OF_BANDS] ;
         this.filters[0] = new Filter(this.lenghtOfInputSignal);
@@ -55,12 +57,13 @@ public class Equalizer {
 
     }
 
+    // работа эквалайзера
     public void equalization( ) throws InterruptedException, ExecutionException {
         Future<short[]>[] fs = new Future[Equalizer.COUNT_OF_BANDS];
         for(int i = 0; i < Equalizer.COUNT_OF_BANDS; i++){
             fs[i] = pool.submit(this.filters[i]);
         }
-
+        // алгоритм формирвоания выходного сигнала после фильрации сигнала
         for(int i = 0; i < this.outputSignal.length; i++) {
             this.outputSignal[i] += fs[0].get()[i] +
                     fs[1].get()[i] +
@@ -73,10 +76,12 @@ public class Equalizer {
         }
     }
 
+    // получить заднный фильтр
     public Filter getFilter(short nF) {
         return this.filters[nF];
     }
 
+    // получить выходной сигнал
     public short[] getOutputSignal() {
         try {
             Thread.sleep(0);
@@ -85,6 +90,7 @@ public class Equalizer {
         return this.outputSignal;
     }
 
+    // заверешение работы
     public void close() {
         if(this.pool != null) {
             this.pool.shutdown();

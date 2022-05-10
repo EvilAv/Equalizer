@@ -25,9 +25,11 @@ import java.util.ResourceBundle;
 
 public class FXMLDocumentController implements Initializable {
 
+    // слайдеры для фильтров,эффекта Вибрато и уровня громкости
     @FXML
     private Slider Slider0, Slider1, Slider2, Slider3, Slider4, Slider5, Slider6, Slider7,
-            soundSlider, distortionSlider;
+            soundSlider, vibratoSlider;
+    // графики частот
     @FXML
     private LineChart chart1;
     @FXML
@@ -36,12 +38,13 @@ public class FXMLDocumentController implements Initializable {
     private NumberAxis xAxis1, yAxis1, xAxis2, yAxis2;
     private AudioPlayer audioPlayer;
     private Thread playThread, plotThread;
+    //чекбоксы для подключения эффектов
     @FXML
     CheckBox chorusBox, distBox;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
+        //инициализируем чекбоксы и слайдеры
         this.listenSliders();
         this.initialGraph();
         this.checkBoxInnitial();
@@ -68,18 +71,21 @@ public class FXMLDocumentController implements Initializable {
         System.out.println("PLAY");
     }
 
+    // обработчик нажатия на кнопку play (продолжить проигрывать музыку)
     @FXML
     private void play() {
         if (this.audioPlayer != null)
             this.audioPlayer.setPause(false);
     }
 
+    // обработчик нажатия на кнопку pause (приостановка программы)
     @FXML
     private void pause() {
         if (this.audioPlayer != null)
             this.audioPlayer.setPause(true);
     }
 
+    // обработчик нажатия на кнопку stop (возврат к исходным параметрам)
     @FXML
     private void stop() {
         if (this.audioPlayer == null) return;
@@ -93,9 +99,10 @@ public class FXMLDocumentController implements Initializable {
         Slider7.setValue(0);
 
         soundSlider.setValue(0.65);
-        this.distortionSlider.setValue(1.0);
+        this.vibratoSlider.setValue(1.0);
     }
 
+    //чекбокс для подключения эффекта Дилей
     @FXML
     private void chorusBox() throws IOException, InterruptedException{
         System.out.println("Delay");
@@ -104,6 +111,7 @@ public class FXMLDocumentController implements Initializable {
         else this.audioPlayer.setDelay(false);
     }
 
+    //чекбокс для подключения эффекта Вибрато
     @FXML
     private void distBox(){
         System.out.println("Vibrato");
@@ -112,6 +120,7 @@ public class FXMLDocumentController implements Initializable {
         else this.audioPlayer.setVibrato(false);
     }
 
+    // обработчик нажатия на кнопку X (заверщение работы программы)
     @FXML
     private void clickClose() {
         if(this.audioPlayer != null) {
@@ -159,7 +168,7 @@ public class FXMLDocumentController implements Initializable {
             audioPlayer.getEqualizer().getFilter((short)7).setGain((float)newValue.doubleValue());
         });
 
-        distortionSlider.valueProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
+        vibratoSlider.valueProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
             /*String str = String.format("%.1f", (newValue.doubleValue()));*/
             audioPlayer.setVibratoCoef(newValue.doubleValue());
         });
@@ -201,6 +210,7 @@ public class FXMLDocumentController implements Initializable {
         this.yAxis2.setAnimated(false);
     }
 
+    // метод, реализующий инициализацию чекбоксов для подключения эффектов
     private void checkBoxInnitial() {
         this.chorusBox = new CheckBox();
         this.chorusBox.selectedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
@@ -213,12 +223,14 @@ public class FXMLDocumentController implements Initializable {
         });
     }
 
+    // управление громкостью при помощи слайдера
     private void volumeFromSlider() {
         soundSlider.valueProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
             audioPlayer.setVolume(newValue.doubleValue());
         });
     }
 
+    // отрисовка графиков при нажатии чекбокса при помощи потоков
     private boolean graphFlag = false;
     @FXML
     private void clickPlot(){

@@ -26,7 +26,7 @@
         <Label fx:id="ef" layoutX="14.0" layoutY="157.0" text="Choose effect:" />
         <CheckBox layoutX="24.0" layoutY="188.0" onAction="#chorusBox" text="Delay" />
         <CheckBox layoutX="24.0" layoutY="208.0" onAction="#distBox" text="Vibrato" />
-        <Slider fx:id="distortionSlider" layoutX="180.0" layoutY="201.0" max="7" maxWidth="110" min="0" rotate="0" value="1.0">
+        <Slider fx:id="vibratoSlider" layoutX="180.0" layoutY="201.0" max="7" maxWidth="110" min="0" rotate="0" value="1.0">
         </Slider>
         <HBox layoutX="366.0" layoutY="42.0" prefHeight="20" prefWidth="802.0">
             <children>
