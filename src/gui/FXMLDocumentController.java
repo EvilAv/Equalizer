@@ -7,7 +7,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.Slider;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
@@ -25,26 +24,24 @@ import java.util.ResourceBundle;
 
 public class FXMLDocumentController implements Initializable {
 
+    // слайдер для контроля уровня громкости
     @FXML
-    private Slider Slider0, Slider1, Slider2, Slider3, Slider4, Slider5, Slider6, Slider7,
-            soundSlider, distortionSlider;
+    private Slider soundSlider;
+    // графики частот
     @FXML
     private LineChart chart1;
     @FXML
     private LineChart chart2;
+
     @FXML
     private NumberAxis xAxis1, yAxis1, xAxis2, yAxis2;
     private AudioPlayer audioPlayer;
     private Thread playThread, plotThread;
-    @FXML
-    CheckBox chorusBox, distBox;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
-        this.listenSliders();
+        // инициализируем графики и слайдер уровня громкости
         this.initialGraph();
-        this.checkBoxInnitial();
         this.volumeFromSlider();
     }
 
@@ -68,50 +65,29 @@ public class FXMLDocumentController implements Initializable {
         System.out.println("PLAY");
     }
 
+    // обработчик нажатия на кнопку play (продолжить проигрывать музыку)
     @FXML
     private void play() {
         if (this.audioPlayer != null)
             this.audioPlayer.setPause(false);
     }
 
+    // обработчик нажатия на кнопку pause (приостановка программы)
     @FXML
     private void pause() {
         if (this.audioPlayer != null)
             this.audioPlayer.setPause(true);
     }
 
+    // обработчик нажатия на кнопку stop (возврат к исходным параметрам)
     @FXML
     private void stop() {
         if (this.audioPlayer == null) return;
-        Slider0.setValue(0);
-        Slider1.setValue(0);
-        Slider2.setValue(0);
-        Slider3.setValue(0);
-        Slider4.setValue(0);
-        Slider5.setValue(0);
-        Slider6.setValue(0);
-        Slider7.setValue(0);
 
         soundSlider.setValue(0.65);
-        this.distortionSlider.setValue(1.0);
     }
 
-    @FXML
-    private void chorusBox() throws IOException, InterruptedException{
-        System.out.println("Delay");
-        if(!this.audioPlayer.delayIsActive())
-            this.audioPlayer.setDelay(true);
-        else this.audioPlayer.setDelay(false);
-    }
-
-    @FXML
-    private void distBox(){
-        System.out.println("Vibrato");
-        if(!this.audioPlayer.vibratoIsActive())
-            this.audioPlayer.setVibrato(true);
-        else this.audioPlayer.setVibrato(false);
-    }
-
+    // обработчик нажатия на кнопку X (заверщение работы программы)
     @FXML
     private void clickClose() {
         if(this.audioPlayer != null) {
@@ -124,46 +100,6 @@ public class FXMLDocumentController implements Initializable {
         System.exit(0);
     }
 
-    //Метод, осуществляющий прослушку слайдеров и изменяющий КУ полос эквалайзера
-    private void listenSliders(){
-        Slider0.valueProperty().addListener((observable, oldValue, newValue) -> {
-            audioPlayer.getEqualizer().getFilter((short)0).setGain((float)newValue.doubleValue());
-        });
-
-        Slider1.valueProperty().addListener((observable, oldValue, newValue) -> {
-            audioPlayer.getEqualizer().getFilter((short)1).setGain((float)newValue.doubleValue());
-        });
-
-        Slider2.valueProperty().addListener((observable, oldValue, newValue) -> {
-            audioPlayer.getEqualizer().getFilter((short)2).setGain((float)newValue.doubleValue());
-        });
-
-        Slider3.valueProperty().addListener((observable, oldValue, newValue) -> {
-            audioPlayer.getEqualizer().getFilter((short)3).setGain((float)newValue.doubleValue());
-        });
-
-        Slider4.valueProperty().addListener((observable, oldValue, newValue) -> {
-            audioPlayer.getEqualizer().getFilter((short)4).setGain((float)newValue.doubleValue());
-        });
-
-
-        Slider5.valueProperty().addListener((observable, oldValue, newValue) -> {
-            audioPlayer.getEqualizer().getFilter((short)5).setGain((float)newValue.doubleValue());
-        });
-
-        Slider6.valueProperty().addListener((observable, oldValue, newValue) -> {
-            audioPlayer.getEqualizer().getFilter((short)6).setGain((float)newValue.doubleValue());
-        });
-
-        Slider7.valueProperty().addListener((observable, oldValue, newValue) -> {
-            audioPlayer.getEqualizer().getFilter((short)7).setGain((float)newValue.doubleValue());
-        });
-
-        distortionSlider.valueProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
-            /*String str = String.format("%.1f", (newValue.doubleValue()));*/
-            audioPlayer.setVibratoCoef(newValue.doubleValue());
-        });
-    }
 
 
     private XYChart.Data[] oldData;
@@ -201,24 +137,14 @@ public class FXMLDocumentController implements Initializable {
         this.yAxis2.setAnimated(false);
     }
 
-    private void checkBoxInnitial() {
-        this.chorusBox = new CheckBox();
-        this.chorusBox.selectedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        });
-
-        this.distBox = new CheckBox();
-        this.distBox.selectedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        });
-    }
-
+    // управление громкостью при помощи слайдера
     private void volumeFromSlider() {
         soundSlider.valueProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
             audioPlayer.setVolume(newValue.doubleValue());
         });
     }
 
+    // отрисовка графиков при нажатии чекбокса при помощи потоков
     private boolean graphFlag = false;
     @FXML
     private void clickPlot(){

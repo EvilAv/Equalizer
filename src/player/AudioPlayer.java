@@ -1,7 +1,5 @@
 package player;
 
-import effects.Delay;
-import effects.Vibrato;
 import equalizer.Equalizer;
 
 import javax.sound.sampled.*;
@@ -24,31 +22,24 @@ public class AudioPlayer implements LineListener{
     private final FFT fourierInput;
     public FFT fourierOutput;
 
-    private final Delay delay;
-    private boolean isDelay;
-
-    private final Vibrato vibrato;
-    private double vibratoCoef;
-    private boolean isVibrato;
 
     private final Equalizer equalizer;
     private boolean pause;
     private final AudioFormat format;
 
 
-
+    // конструктор
     public AudioPlayer(File musicFile) throws UnsupportedAudioFileException,
             IOException, InterruptedException, LineUnavailableException {
+        // читаем файл
         ReadMusicFile readFile = new ReadMusicFile(musicFile);
+        // задаем буфер для воспроизведения файла, обращающийся к микшеру
         this.sourceDataLine =  readFile.getSourceDataLine();
+        // задаем входной звуковой поток
         this.ais = readFile.getAudioInputStream();
         this.buff = new byte[this.BUFF_SIZE];
         this.sampleBuff = new short[BUFF_SIZE / 2];
-        this.delay = new Delay();
-        this.vibrato = new Vibrato();
-        this.isDelay = false;
-        this.isVibrato = false;
-        this.vibratoCoef = 1.0;
+        // инициализируем класс эквалайзера
         this.equalizer = new Equalizer(BUFF_SIZE / 2);
         AudioFileFormat aff = new AudioFileFormat();
         format = new AudioFormat((float)aff.getSampleRate(),
@@ -59,7 +50,7 @@ public class AudioPlayer implements LineListener{
         this.fourierOutput = new FFT();
     }
 
-
+    // воспроизводим звук
     public void play() {
         try{
             this.sourceDataLine.open(this.format);
@@ -74,12 +65,6 @@ public class AudioPlayer implements LineListener{
                 this.fourierInput.FFTAnalysis(this.sampleBuff, 512);
                 if(this.pause) {this.stop();}
 
-                if(this.isDelay)
-                    this.delay(this.sampleBuff);
-
-                if(this.isVibrato) {
-                    this.vibrato(sampleBuff);
-                }
 
                 equalizer.setInputSignal(this.sampleBuff);
                 this.equalizer.equalization();
@@ -99,39 +84,7 @@ public class AudioPlayer implements LineListener{
         }
     }
 
-
-    private void delay(short[] inputSamples) {
-        this.delay.setInputSampleStream(inputSamples);
-        this.delay.createEffect();
-    }
-
-    public boolean delayIsActive() {
-        return this.isDelay;
-    }
-
-    public void setDelay(boolean b) {
-        this.isDelay = b;
-    }
-
-    private void vibrato(short[] inputSamples) {
-        this.vibrato.setVibratoCoef(this.vibratoCoef);
-        this.vibrato.setInputSampleStream(inputSamples);
-        this.vibrato.createEffect();
-    }
-
-    public boolean vibratoIsActive() {
-        return this.isVibrato;
-    }
-
-    public void setVibrato(boolean b) {
-        this.isVibrato = b;
-    }
-
-    public void setVibratoCoef(double c) {
-        this.vibratoCoef = c;
-    }
-
-
+    // присотанавливаем воспроизведение
     private void stop() {
         if(pause) {
             for(;;) {
@@ -171,13 +124,14 @@ public class AudioPlayer implements LineListener{
         return this.sampleBuff;
     }
 
+    // преобразуем массив байтов в массив отсчетов
     private void ByteArrayToSamplesArray() {
         for(int i = 0, j = 0; i < this.buff.length; i += 2 , j++) {
             this.sampleBuff[j] = (short) (0.5 *  (ByteBuffer.wrap(this.buff, i, 2).order(
                     java.nio.ByteOrder.LITTLE_ENDIAN).getShort()) * this.getVolume());
         }
     }
-
+    // преобразуем массив отсчетов в массив байтов
     private void SampleArrayByteArray() {
         for(int i = 0, j = 0; i < this.sampleBuff.length && j < (this.buff.length); i++, j += 2 ) {
             this.buff[j] = (byte)(this.sampleBuff[i]);
@@ -190,6 +144,7 @@ public class AudioPlayer implements LineListener{
         return this.equalizer;
     }
 
+    // заврешаем воспроизведение звука и заврешаем все системные процессы связанные с ним
     public void close() {
         if(this.ais != null)
             try {

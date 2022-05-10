@@ -9,11 +9,14 @@ import gui.FXMLDocumentController;
 
 public class EqualizerApp extends Application {
 
+    // запуск приложения
     @Override
     public void start(Stage stage) throws Exception {
+        // указываем путь к файлу с разметкой
         Parent root = FXMLLoader.load(getClass().getResource("gui.fxml"));
         Scene scene = new Scene(root);
         stage.setScene(scene);
+        // подключаем файл стилей 
         scene.getStylesheets().add
                 (EqualizerApp.class.getResource("style.css").toExternalForm());
         stage.show();
