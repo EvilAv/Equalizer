@@ -1,0 +1,46 @@
+.root {
+     -fx-background-color:#9bc2af;
+     -fx-text-fill:#000000;
+}
+.button {
+ -fx-background-color: #ffffff;
+ -fx-text-fill:#000000;
+}
+
+.button:hover {
+ -fx-background-color: #defff1;
+ -fx-text-fill:#000000;
+}
+.label{
+-fx-text-fill:#000000;
+}
+
+
+
+#l_open,#ef{
+-fx-font-size:16px;
+}
+
+
+.check-box{
+-fx-text-fill:#000000;
+-fx-font-style:italic;
+-fx-font-size:16px;
+}
+
+
+.chart-plot-background {
+    -fx-background-color:#eee;
+}
+
+.default-color0.chart-series-line {
+    -fx-stroke: #1fcf28;
+    -fx-stroke-width: 2;
+}
+.slider .axis .axis-tick-mark, .slider .axis .axis-minor-tick-mark {
+    -fx-fill: null;
+    -fx-stroke: black;
+}
+.slider .axis {
+    -fx-tick-label-fill: black;
+}
