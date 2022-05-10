@@ -33,6 +33,10 @@
     -fx-background-color:#eee;
 }
 
+.chart .axis {
+    -fx-tick-label-fill: #000000;
+}
+
 .default-color0.chart-series-line {
     -fx-stroke: #1fcf28;
     -fx-stroke-width: 2;
