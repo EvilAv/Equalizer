@@ -74,6 +74,7 @@ public class AudioPlayer implements LineListener{
             this.sourceDataLine.start();
             this.pause = false;
             while ((this.ais.read(this.buff, 0, this.BUFF_SIZE)) != -1) {
+                // используем кольцевой буффер для хранения отсчетов
                 this.ByteArrayToSamplesArray();
 
                 //отрисовка без изменения sampleBuff
@@ -188,7 +189,7 @@ public class AudioPlayer implements LineListener{
         return this.sampleBuff;
     }
 
-    // преобразуем массив байтов в массив отсчетов
+    // преобразуем массив байтов в массив отсчетов, реализуем кольцевой буффер
     private void ByteArrayToSamplesArray() {
         for(int i = 0, j = 0; i < this.buff.length; i += 2 , j++) {
             this.sampleBuff[j] = (short) (0.5 *  (ByteBuffer.wrap(this.buff, i, 2).order(
