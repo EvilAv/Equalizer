@@ -24,9 +24,9 @@
         </Slider>
 
         <Label fx:id="ef" layoutX="14.0" layoutY="157.0" text="Choose effect:" />
-        <CheckBox layoutX="24.0" layoutY="188.0" onAction="#chorusBox" text="Delay" />
-        <CheckBox layoutX="24.0" layoutY="208.0" onAction="#distBox" text="Vibrato" />
-        <Slider fx:id="vibratoSlider" layoutX="180.0" layoutY="201.0" max="7" maxWidth="110" min="0" rotate="0" value="1.0">
+        <CheckBox layoutX="24.0" layoutY="188.0" onAction="#reverbBox" text="Reverb" />
+        <CheckBox layoutX="24.0" layoutY="208.0" onAction="#envBox" text="Envelope" />
+        <Slider fx:id="envelopeSlider" layoutX="180.0" layoutY="201.0" max="7" maxWidth="110" min="0" rotate="0" value="1.0">
         </Slider>
         <HBox layoutX="366.0" layoutY="42.0" prefHeight="20" prefWidth="802.0">
             <children>
@@ -43,14 +43,14 @@
         </HBox>
         <HBox layoutX="349.0" layoutY="67.0" prefHeight="166.0" prefWidth="829.0">
             <children>
-                <Slider fx:id="Slider0" max="0" min="-40" orientation="VERTICAL" prefWidth="100" value="0" showTickLabels="true" showTickMarks="true" majorTickUnit="10"/>
-                <Slider fx:id="Slider1" max="0" min="-40" orientation="VERTICAL" prefWidth="100" value="0" showTickLabels="true" showTickMarks="true" majorTickUnit="10"/>
-                <Slider fx:id="Slider2" max="0" min="-40" orientation="VERTICAL" prefWidth="100" value="0" showTickLabels="true" showTickMarks="true" majorTickUnit="10"/>
-                <Slider fx:id="Slider3" max="0" min="-40" orientation="VERTICAL" prefWidth="100" value="0" showTickLabels="true" showTickMarks="true" majorTickUnit="10"/>
-                <Slider fx:id="Slider4" max="0" min="-40" orientation="VERTICAL" prefWidth="100" value="0" showTickLabels="true" showTickMarks="true" majorTickUnit="10"/>
-                <Slider fx:id="Slider5" max="0" min="-40" orientation="VERTICAL" prefWidth="100" value="0" showTickLabels="true" showTickMarks="true" majorTickUnit="10"/>
-                <Slider fx:id="Slider6" max="0" min="-40" orientation="VERTICAL" prefWidth="100" value="0" showTickLabels="true" showTickMarks="true" majorTickUnit="10"/>
-                <Slider fx:id="Slider7" max="0" min="-40" orientation="VERTICAL" prefWidth="100" value="0" showTickLabels="true" showTickMarks="true" majorTickUnit="10"/>
+                <Slider fx:id="Slider0" max="0" min="-50" orientation="VERTICAL" prefWidth="100" value="0" showTickLabels="true" showTickMarks="true" majorTickUnit="10"/>
+                <Slider fx:id="Slider1" max="0" min="-50" orientation="VERTICAL" prefWidth="100" value="0" showTickLabels="true" showTickMarks="true" majorTickUnit="10"/>
+                <Slider fx:id="Slider2" max="0" min="-50" orientation="VERTICAL" prefWidth="100" value="0" showTickLabels="true" showTickMarks="true" majorTickUnit="10"/>
+                <Slider fx:id="Slider3" max="0" min="-50" orientation="VERTICAL" prefWidth="100" value="0" showTickLabels="true" showTickMarks="true" majorTickUnit="10"/>
+                <Slider fx:id="Slider4" max="0" min="-50" orientation="VERTICAL" prefWidth="100" value="0" showTickLabels="true" showTickMarks="true" majorTickUnit="10"/>
+                <Slider fx:id="Slider5" max="0" min="-50" orientation="VERTICAL" prefWidth="100" value="0" showTickLabels="true" showTickMarks="true" majorTickUnit="10"/>
+                <Slider fx:id="Slider6" max="0" min="-50" orientation="VERTICAL" prefWidth="100" value="0" showTickLabels="true" showTickMarks="true" majorTickUnit="10"/>
+                <Slider fx:id="Slider7" max="0" min="-50" orientation="VERTICAL" prefWidth="100" value="0" showTickLabels="true" showTickMarks="true" majorTickUnit="10"/>
 
             </children>
 

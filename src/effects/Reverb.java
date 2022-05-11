@@ -1,9 +1,9 @@
 package effects;
 
 
-public class Delay extends Effect{
+public class Reverb extends Effect{
 
-    public Delay() {
+    public Reverb() {
         super();
     }
 
@@ -17,7 +17,7 @@ public class Delay extends Effect{
         short amplitude;
         short delayAmplitude;
         int checkFlag;
-        int delay = 5000; // определяем задержку, т.е спутся какое число отсчетов будем увеличивать амплитуду сигнала
+        int delay = 5000; // определяем задержку, т.е спутся какое число отсчетов будем уменьшать амплитуду сигнала
         int position = 0;
 
         // добавляем эффект Дилей к входящему сигналу
@@ -27,7 +27,7 @@ public class Delay extends Effect{
             // получаем амплитуду с задержкой
             delayAmplitude = this.inputAudioStream[position];
             // вычисляем новую амплитуду по формуле
-            checkFlag = ( (( delayAmplitude) + (int)(0.9 * amplitude)));
+            checkFlag = ( (( delayAmplitude) - (int)(0.9 * amplitude)));
             // если чилсо не превышает размер типа short, то меняем амплитуду отсчета с задержкой
             if(checkFlag < Short.MAX_VALUE && checkFlag > Short.MIN_VALUE) {
                 delayAmplitude = (short)checkFlag;

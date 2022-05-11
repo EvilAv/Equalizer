@@ -25,10 +25,10 @@ import java.util.ResourceBundle;
 
 public class FXMLDocumentController implements Initializable {
 
-    // слайдеры для фильтров,эффекта Вибрато и уровня громкости
+    // слайдеры для фильтров,эффекта Енвелоп и уровня громкости
     @FXML
     private Slider Slider0, Slider1, Slider2, Slider3, Slider4, Slider5, Slider6, Slider7,
-            soundSlider, vibratoSlider;
+            soundSlider, envelopeSlider;
     // графики частот
     @FXML
     private LineChart chart1;
@@ -99,25 +99,25 @@ public class FXMLDocumentController implements Initializable {
         Slider7.setValue(0);
 
         soundSlider.setValue(0.65);
-        this.vibratoSlider.setValue(1.0);
+        this.envelopeSlider.setValue(1.0);
     }
 
-    //чекбокс для подключения эффекта Дилей
+    //чекбокс для подключения эффекта Реверберации
     @FXML
-    private void chorusBox() throws IOException, InterruptedException{
-        System.out.println("Delay");
-        if(!this.audioPlayer.delayIsActive())
-            this.audioPlayer.setDelay(true);
-        else this.audioPlayer.setDelay(false);
+    private void reverbBox() throws IOException, InterruptedException{
+        System.out.println("Reverb");
+        if(!this.audioPlayer.reverbIsActive())
+            this.audioPlayer.setReverb(true);
+        else this.audioPlayer.setReverb(false);
     }
 
-    //чекбокс для подключения эффекта Вибрато
+    //чекбокс для подключения эффекта Енвелоп
     @FXML
-    private void distBox(){
-        System.out.println("Vibrato");
-        if(!this.audioPlayer.vibratoIsActive())
-            this.audioPlayer.setVibrato(true);
-        else this.audioPlayer.setVibrato(false);
+    private void envBox(){
+        System.out.println("Envelope");
+        if(!this.audioPlayer.envelopeIsActive())
+            this.audioPlayer.setEnvelope(true);
+        else this.audioPlayer.setEnvelope(false);
     }
 
     // обработчик нажатия на кнопку X (заверщение работы программы)
@@ -168,9 +168,9 @@ public class FXMLDocumentController implements Initializable {
             audioPlayer.getEqualizer().getFilter((short)7).setGain((float)newValue.doubleValue());
         });
 
-        vibratoSlider.valueProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
+        envelopeSlider.valueProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
             /*String str = String.format("%.1f", (newValue.doubleValue()));*/
-            audioPlayer.setVibratoCoef(newValue.doubleValue());
+            audioPlayer.setEnvelopeCoef(newValue.doubleValue());
         });
     }
 

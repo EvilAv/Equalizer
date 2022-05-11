@@ -1,6 +1,6 @@
 package effects;
 
-public class Vibrato extends Effect {
+public class Envelope extends Effect {
 
     private short maxAmplitude;
     private short minAmplitude;
@@ -8,7 +8,7 @@ public class Vibrato extends Effect {
     private static final short standartMin = -350;
     private double coef;
 
-    public Vibrato() {
+    public Envelope() {
         super();
         this.coef = 20.0;
     }
@@ -51,11 +51,11 @@ public class Vibrato extends Effect {
 
     // рассчитываем максимальную и минимальную амплитуду
     private void  setMaxAndMinAmpl() {
-        this.maxAmplitude = (short) (Vibrato.standartMax * this.coef);
-        this.minAmplitude = (short) (Vibrato.standartMin * this.coef);
+        this.maxAmplitude = (short) (Envelope.standartMax * this.coef);
+        this.minAmplitude = (short) (Envelope.standartMin * this.coef);
     }
 
-    public void setVibratoCoef(double coef) {
+    public void setEnvelopeCoef(double coef) {
         this.coef = coef;
     }
 

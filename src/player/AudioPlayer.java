@@ -1,7 +1,7 @@
 package player;
 
-import effects.Delay;
-import effects.Vibrato;
+import effects.Reverb;
+import effects.Envelope;
 import equalizer.Equalizer;
 
 import javax.sound.sampled.*;
@@ -24,12 +24,12 @@ public class AudioPlayer implements LineListener{
     private final FFT fourierInput;
     public FFT fourierOutput;
 
-    private final Delay delay;
-    private boolean isDelay;
+    private final Reverb reverb;
+    private boolean isReverb;
 
-    private final Vibrato vibrato;
-    private double vibratoCoef;
-    private boolean isVibrato;
+    private final Envelope envelope;
+    private double envelopeCoef;
+    private boolean isEnvelope;
 
     private final Equalizer equalizer;
     private boolean pause;
@@ -49,12 +49,12 @@ public class AudioPlayer implements LineListener{
         this.buff = new byte[this.BUFF_SIZE];
         this.sampleBuff = new short[BUFF_SIZE / 2];
         // инициализируем эффекты
-        this.delay = new Delay();
-        this.vibrato = new Vibrato();
+        this.reverb = new Reverb();
+        this.envelope = new Envelope();
         // отключаем эффекты, чтобы изначально воспроизводить чисытй звук
-        this.isDelay = false;
-        this.isVibrato = false;
-        this.vibratoCoef = 1.0;
+        this.isReverb = false;
+        this.isEnvelope = false;
+        this.envelopeCoef = 1.0;
         // инициализируем класс эквалайзера
         this.equalizer = new Equalizer(BUFF_SIZE / 2);
         AudioFileFormat aff = new AudioFileFormat();
@@ -83,11 +83,11 @@ public class AudioPlayer implements LineListener{
                 this.fourierInput.FFTAnalysis(this.sampleBuff, 512);
                 if(this.pause) {this.stop();}
 
-                if(this.isDelay)
-                    this.delay(this.sampleBuff);
+                if(this.isReverb)
+                    this.reverb(this.sampleBuff);
 
-                if(this.isVibrato) {
-                    this.vibrato(sampleBuff);
+                if(this.isEnvelope) {
+                    this.envelope(sampleBuff);
                 }
 
                 equalizer.setInputSignal(this.sampleBuff);
@@ -109,42 +109,42 @@ public class AudioPlayer implements LineListener{
         }
     }
 
-    // задаем эффект Дилей
-    private void delay(short[] inputSamples) {
-        this.delay.setInputSampleStream(inputSamples);
-        this.delay.createEffect();
+    // задаем эффект Реверберации
+    private void reverb(short[] inputSamples) {
+        this.reverb.setInputSampleStream(inputSamples);
+        this.reverb.createEffect();
     }
 
-    // проверяем активен ли эффект Дилей
-    public boolean delayIsActive() {
-        return this.isDelay;
+    // проверяем активен ли эффект Реверберации
+    public boolean reverbIsActive() {
+        return this.isReverb;
     }
 
-    // отключаем/подключаем эффект Дилей
-    public void setDelay(boolean b) {
-        this.isDelay = b;
+    // отключаем/подключаем эффект Реверберации
+    public void setReverb(boolean b) {
+        this.isReverb = b;
     }
 
-    // задаем эффект Вибрато
-    private void vibrato(short[] inputSamples) {
-        this.vibrato.setVibratoCoef(this.vibratoCoef);
-        this.vibrato.setInputSampleStream(inputSamples);
-        this.vibrato.createEffect();
+    // задаем эффект Енвелоп
+    private void envelope(short[] inputSamples) {
+        this.envelope.setEnvelopeCoef(this.envelopeCoef);
+        this.envelope.setInputSampleStream(inputSamples);
+        this.envelope.createEffect();
     }
 
-    // проверяем активен ли эффект Вибрато
-    public boolean vibratoIsActive() {
-        return this.isVibrato;
+    // проверяем активен ли эффект Енвелоп
+    public boolean envelopeIsActive() {
+        return this.isEnvelope;
     }
 
-    // отключаем/подключаем эффект Вибрато
-    public void setVibrato(boolean b) {
-        this.isVibrato = b;
+    // отключаем/подключаем эффект Енвелоп
+    public void setEnvelope(boolean b) {
+        this.isEnvelope = b;
     }
 
-    // задаем коэффициент для эффекта Вибрато
-    public void setVibratoCoef(double c) {
-        this.vibratoCoef = c;
+    // задаем коэффициент для эффекта Енвелоп
+    public void setEnvelopeCoef(double c) {
+        this.envelopeCoef = c;
     }
 
 
