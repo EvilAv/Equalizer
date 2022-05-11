@@ -15,7 +15,7 @@ public class AudioPlayer implements LineListener{
     private final byte[] buff;
 
     public boolean isCalculated = false;
-    private final int BUFF_SIZE = 131072;
+    private final int BUFF_SIZE = 4096;
 
     private short[] sampleBuff;
 
@@ -71,10 +71,10 @@ public class AudioPlayer implements LineListener{
                 this.sampleBuff = equalizer.getOutputSignal();
 
 
-                //отрисовка с изменением
+                // будущая отрисовка с изменением
                 this.fourierOutput.FFTAnalysis(this.sampleBuff, 512);
                 this.isCalculated = true;
-                this.SampleArrayByteArray();
+
                 sourceDataLine.write(this.buff, 0, this.buff.length - 0 );
             } System.out.println("END");
             this.isCalculated = false;
@@ -126,17 +126,8 @@ public class AudioPlayer implements LineListener{
 
     // преобразуем массив байтов в массив отсчетов
     private void ByteArrayToSamplesArray() {
-        for(int i = 0, j = 0; i < this.buff.length; i += 2 , j++) {
-            this.sampleBuff[j] = (short) (0.5 *  (ByteBuffer.wrap(this.buff, i, 2).order(
-                    java.nio.ByteOrder.LITTLE_ENDIAN).getShort()) * this.getVolume());
-        }
-    }
-    // преобразуем массив отсчетов в массив байтов
-    private void SampleArrayByteArray() {
-        for(int i = 0, j = 0; i < this.sampleBuff.length && j < (this.buff.length); i++, j += 2 ) {
-            this.buff[j] = (byte)(this.sampleBuff[i]);
-            this.buff[j + 1] = (byte)(this.sampleBuff[i] >>> 8);
-//
+        for(int i = 0, j = 0; i < this.buff.length; i +=2 , j++) {
+            this.sampleBuff[j] = (short) (this.buff[i] + 256 * this.buff[i+1]);
         }
     }
 
