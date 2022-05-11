@@ -99,6 +99,7 @@ public class AudioPlayer implements LineListener{
                 this.fourierOutput.FFTAnalysis(this.sampleBuff, 512);
                 this.isCalculated = true;
                 this.SampleArrayByteArray();
+                // преобразуем измененный сигнал в байты и воспроизводим
                 sourceDataLine.write(this.buff, 0, this.buff.length - 0 );
             } System.out.println("END");
             this.isCalculated = false;
@@ -197,7 +198,7 @@ public class AudioPlayer implements LineListener{
         }
     }
 
-    // преобразуем массив отсчетов в массив байтов
+    // преобразуем массив отсчетов (реализованный кольцевым буфером) в массив байтов
     private void SampleArrayByteArray() {
         for(int i = 0, j = 0; i < this.sampleBuff.length && j < (this.buff.length); i++, j += 2 ) {
             this.buff[j] = (byte)(this.sampleBuff[i]);
