@@ -110,7 +110,7 @@ public class FXMLDocumentController implements Initializable {
     //Метод, осуществляющий прослушку слайдеров и изменяющий КУ полос эквалайзера
     private void listenSliders(){
         Slider7.valueProperty().addListener((observable, oldValue, newValue) -> {
-            audioPlayer.getEqualizer().getFilter((short)7).setGain((float)newValue.doubleValue());
+            audioPlayer.getEqualizer().getFilter((short)0).setGain((float)newValue.doubleValue());
         });
 
     }
