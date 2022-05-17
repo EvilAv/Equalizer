@@ -17,7 +17,7 @@ public class AudioPlayer implements LineListener{
     private final byte[] buff;
 
     public boolean isCalculated = false;
-    private final int BUFF_SIZE = 131072;
+    private final int BUFF_SIZE = 65536;
 
     private short[] sampleBuff;
 
