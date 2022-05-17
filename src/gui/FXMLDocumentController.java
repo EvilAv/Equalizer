@@ -27,8 +27,8 @@ public class FXMLDocumentController implements Initializable {
 
     // слайдеры для фильтров,эффекта Вибрато и уровня громкости
     @FXML
-    private Slider Slider0, Slider1, Slider2, Slider3, Slider4, Slider5, Slider6, Slider7,
-            soundSlider, vibratoSlider;
+    private Slider  Slider7,
+            soundSlider;
     // графики частот
     @FXML
     private LineChart chart1;
@@ -47,7 +47,6 @@ public class FXMLDocumentController implements Initializable {
         //инициализируем чекбоксы и слайдеры
         this.listenSliders();
         this.initialGraph();
-        this.checkBoxInnitial();
         this.volumeFromSlider();
     }
 
@@ -89,36 +88,11 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private void stop() {
         if (this.audioPlayer == null) return;
-        Slider0.setValue(0);
-        Slider1.setValue(0);
-        Slider2.setValue(0);
-        Slider3.setValue(0);
-        Slider4.setValue(0);
-        Slider5.setValue(0);
-        Slider6.setValue(0);
         Slider7.setValue(0);
 
         soundSlider.setValue(0.65);
-        this.vibratoSlider.setValue(1.0);
     }
 
-    //чекбокс для подключения эффекта Дилей
-    @FXML
-    private void chorusBox() throws IOException, InterruptedException{
-        System.out.println("Delay");
-        if(!this.audioPlayer.delayIsActive())
-            this.audioPlayer.setDelay(true);
-        else this.audioPlayer.setDelay(false);
-    }
-
-    //чекбокс для подключения эффекта Вибрато
-    @FXML
-    private void distBox(){
-        System.out.println("Vibrato");
-        if(!this.audioPlayer.vibratoIsActive())
-            this.audioPlayer.setVibrato(true);
-        else this.audioPlayer.setVibrato(false);
-    }
 
     // обработчик нажатия на кнопку X (заверщение работы программы)
     @FXML
@@ -135,43 +109,10 @@ public class FXMLDocumentController implements Initializable {
 
     //Метод, осуществляющий прослушку слайдеров и изменяющий КУ полос эквалайзера
     private void listenSliders(){
-        Slider0.valueProperty().addListener((observable, oldValue, newValue) -> {
-            audioPlayer.getEqualizer().getFilter((short)0).setGain((float)newValue.doubleValue());
-        });
-
-        Slider1.valueProperty().addListener((observable, oldValue, newValue) -> {
-            audioPlayer.getEqualizer().getFilter((short)1).setGain((float)newValue.doubleValue());
-        });
-
-        Slider2.valueProperty().addListener((observable, oldValue, newValue) -> {
-            audioPlayer.getEqualizer().getFilter((short)2).setGain((float)newValue.doubleValue());
-        });
-
-        Slider3.valueProperty().addListener((observable, oldValue, newValue) -> {
-            audioPlayer.getEqualizer().getFilter((short)3).setGain((float)newValue.doubleValue());
-        });
-
-        Slider4.valueProperty().addListener((observable, oldValue, newValue) -> {
-            audioPlayer.getEqualizer().getFilter((short)4).setGain((float)newValue.doubleValue());
-        });
-
-
-        Slider5.valueProperty().addListener((observable, oldValue, newValue) -> {
-            audioPlayer.getEqualizer().getFilter((short)5).setGain((float)newValue.doubleValue());
-        });
-
-        Slider6.valueProperty().addListener((observable, oldValue, newValue) -> {
-            audioPlayer.getEqualizer().getFilter((short)6).setGain((float)newValue.doubleValue());
-        });
-
         Slider7.valueProperty().addListener((observable, oldValue, newValue) -> {
             audioPlayer.getEqualizer().getFilter((short)7).setGain((float)newValue.doubleValue());
         });
 
-        vibratoSlider.valueProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
-            /*String str = String.format("%.1f", (newValue.doubleValue()));*/
-            audioPlayer.setVibratoCoef(newValue.doubleValue());
-        });
     }
 
 
@@ -209,19 +150,7 @@ public class FXMLDocumentController implements Initializable {
         this.yAxis2.setUpperBound(0.3);
         this.yAxis2.setAnimated(false);
     }
-
-    // метод, реализующий инициализацию чекбоксов для подключения эффектов
-    private void checkBoxInnitial() {
-        this.chorusBox = new CheckBox();
-        this.chorusBox.selectedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        });
-
-        this.distBox = new CheckBox();
-        this.distBox.selectedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        });
-    }
+    
 
     // управление громкостью при помощи слайдера
     private void volumeFromSlider() {
