@@ -1,5 +1,5 @@
 .root {
-     -fx-background-color:#9bc2af;
+     -fx-background-color:#9370DB;
      -fx-text-fill:#000000;
 }
 .button {
@@ -8,7 +8,7 @@
 }
 
 .button:hover {
- -fx-background-color: #defff1;
+ -fx-background-color: #4B0082;
  -fx-text-fill:#000000;
 }
 .label{
@@ -36,9 +36,8 @@
 .chart .axis {
     -fx-tick-label-fill: #000000;
 }
-
 .default-color0.chart-series-line {
-    -fx-stroke: #1fcf28;
+    -fx-stroke: #FF00FF;
     -fx-stroke-width: 2;
 }
 .slider .axis .axis-tick-mark, .slider .axis .axis-minor-tick-mark {
