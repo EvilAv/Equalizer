@@ -21,25 +21,6 @@ public class Envelope extends Effect {
     @Override
     public synchronized short[] createEffect() {
         this.setMaxAndMinAmpl();
-//        float vi_cof = 0.9F;
-//        boolean flag = true;
-//        int position = 0;
-//        for (int i = 5000; i < (this.inputAudioStream.length); i++) {
-//            this.inputAudioStream[position] = (short)(this.inputAudioStream[i] * vi_cof);
-//            if (position % 500 == 0){
-//                if (flag)
-//                    vi_cof += 0.001f;
-//                else
-//                    vi_cof -= 0.001f;
-//                if (vi_cof == 1.0f)
-//                    flag = false;
-//                if (vi_cof == 0.9f)
-//                    flag = true;
-//            }
-//            position++;
-//        }
-        // если исходный сигнал опускается выше или ниже заданных границ,то приравниваем амплитуды к значению границы
-        // иными словами как бы обрезаем синусоиду
         for(int i = 0; i < this.inputAudioStream.length; i ++) {
             if(this.inputAudioStream[i] > this.maxAmplitude)
                 this.inputAudioStream[i] = (this.maxAmplitude);
