@@ -32,7 +32,7 @@
         </HBox>
         <HBox layoutX="349.0" layoutY="67.0" prefHeight="166.0" prefWidth="829.0">
             <children>
-                <Slider fx:id="Slider0" max="0" min="-40" orientation="VERTICAL" prefWidth="100" value="0" showTickLabels="true" showTickMarks="true" majorTickUnit="10"/>
+                <Slider fx:id="Slider0" max="0" min="-50" orientation="VERTICAL" prefWidth="100" value="0" showTickLabels="true" showTickMarks="true" majorTickUnit="10"/>
 
             </children>
 
