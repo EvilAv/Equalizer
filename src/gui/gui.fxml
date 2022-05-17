@@ -59,12 +59,12 @@
         </Button>
         <CheckBox fx:id="buttonPlot" layoutX="168.0" layoutY="69.0" maxWidth="110" onAction="#clickPlot" text="Plot">
         </CheckBox>
-        <LineChart fx:id="chart1" layoutX="10.0" layoutY="249.0" legendVisible="false" title="Before" titleSide="TOP">
+        <LineChart fx:id="chart1" layoutX="10.0" layoutY="260.0" legendVisible="false" title="Before" titleSide="TOP">
             <xAxis><NumberAxis label="Bands" lowerBound="0" tickUnit="1" upperBound="3" fx:id="xAxis1" /></xAxis>
             <yAxis><NumberAxis fx:id="yAxis1" label="Magnitude" lowerBound="0" tickUnit="1" upperBound="3" /></yAxis>
 
         </LineChart>
-        <LineChart fx:id="chart2" layoutX="678.0" layoutY="238.0" legendVisible="false" title="After" titleSide="TOP">
+        <LineChart fx:id="chart2" layoutX="678.0" layoutY="260.0" legendVisible="false" title="After" titleSide="TOP">
             <xAxis><NumberAxis label="Bands" lowerBound="0" tickUnit="1" upperBound="3" fx:id="xAxis2" /></xAxis>
             <yAxis><NumberAxis fx:id="yAxis2" label="Magnitude" lowerBound="0" tickUnit="1" upperBound="3" /></yAxis>
         </LineChart>
