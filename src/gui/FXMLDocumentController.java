@@ -111,28 +111,28 @@ public class FXMLDocumentController implements Initializable {
     private void listenSliders(){
 
         Slider1.valueProperty().addListener((observable, oldValue, newValue) -> {
-            audioPlayer.getEqualizer().getFilter((short)1).setGain((float)newValue.doubleValue());
+            audioPlayer.getEqualizer().getFilter((short)0).setGain((float)newValue.doubleValue());
         });
 
         Slider2.valueProperty().addListener((observable, oldValue, newValue) -> {
-            audioPlayer.getEqualizer().getFilter((short)2).setGain((float)newValue.doubleValue());
+            audioPlayer.getEqualizer().getFilter((short)1).setGain((float)newValue.doubleValue());
         });
 
         Slider3.valueProperty().addListener((observable, oldValue, newValue) -> {
-            audioPlayer.getEqualizer().getFilter((short)3).setGain((float)newValue.doubleValue());
+            audioPlayer.getEqualizer().getFilter((short)2).setGain((float)newValue.doubleValue());
         });
 
         Slider4.valueProperty().addListener((observable, oldValue, newValue) -> {
-            audioPlayer.getEqualizer().getFilter((short)4).setGain((float)newValue.doubleValue());
+            audioPlayer.getEqualizer().getFilter((short)3).setGain((float)newValue.doubleValue());
         });
 
 
         Slider5.valueProperty().addListener((observable, oldValue, newValue) -> {
-            audioPlayer.getEqualizer().getFilter((short)5).setGain((float)newValue.doubleValue());
+            audioPlayer.getEqualizer().getFilter((short)4).setGain((float)newValue.doubleValue());
         });
 
         Slider6.valueProperty().addListener((observable, oldValue, newValue) -> {
-            audioPlayer.getEqualizer().getFilter((short)6).setGain((float)newValue.doubleValue());
+            audioPlayer.getEqualizer().getFilter((short)5).setGain((float)newValue.doubleValue());
         });
 
     }
