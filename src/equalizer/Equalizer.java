@@ -8,7 +8,7 @@ public class Equalizer {
     private short[] inputSignal;
     private short[] outputSignal;
     private Filter[] filters;
-    private final static int COUNT_OF_BANDS= 8;
+    private final static int COUNT_OF_BANDS= 7;
     private final static char COUNT_OF_THREADS = 4;
     private final int lenghtOfInputSignal;
     ExecutorService pool;
@@ -25,8 +25,6 @@ public class Equalizer {
     public void setInputSignal(short[] inputSignal) {
         this.inputSignal = inputSignal;
         this.outputSignal = new short[this.lenghtOfInputSignal];
-        this.filters[0].settings(FilterInfo.COEFS_OF_BAND_0,
-                FilterInfo.COUNT_OF_COEFS, this.inputSignal);
         this.filters[1].settings(FilterInfo.COEFS_OF_BAND_1,
                 FilterInfo.COUNT_OF_COEFS, this.inputSignal);
         this.filters[2].settings(FilterInfo.COEFS_OF_BAND_2,
@@ -39,40 +37,34 @@ public class Equalizer {
                 FilterInfo.COUNT_OF_COEFS, this.inputSignal);
         this.filters[6].settings(FilterInfo.COEFS_OF_BAND_6,
                 FilterInfo.COUNT_OF_COEFS, this.inputSignal);
-        this.filters[7].settings(FilterInfo.COEFS_OF_BAND_7,
-                FilterInfo.COUNT_OF_COEFS, this.inputSignal);
     }
 
     // создаем набор нужных фильтров
     private void createFilters() {
         this.filters = new Filter [Equalizer.COUNT_OF_BANDS] ;
-        this.filters[0] = new Filter(this.lenghtOfInputSignal);
         this.filters[1] = new Filter(this.lenghtOfInputSignal);
         this.filters[2] = new Filter(this.lenghtOfInputSignal);
         this.filters[3] = new Filter(this.lenghtOfInputSignal);
         this.filters[4] = new Filter(this.lenghtOfInputSignal);
         this.filters[5] = new Filter(this.lenghtOfInputSignal);
         this.filters[6] = new Filter(this.lenghtOfInputSignal);
-        this.filters[7] = new Filter(this.lenghtOfInputSignal);
 
     }
 
     // работа эквалайзера
     public void equalization( ) throws InterruptedException, ExecutionException {
         Future<short[]>[] fs = new Future[Equalizer.COUNT_OF_BANDS];
-        for(int i = 0; i < Equalizer.COUNT_OF_BANDS; i++){
+        for(int i = 1; i < Equalizer.COUNT_OF_BANDS; i++){
             fs[i] = pool.submit(this.filters[i]);
         }
         // алгоритм формирвоания выходного сигнала после фильрации сигнала
         for(int i = 0; i < this.outputSignal.length; i++) {
-            this.outputSignal[i] += fs[0].get()[i] +
-                    fs[1].get()[i] +
+            this.outputSignal[i] += fs[1].get()[i] +
                     fs[2].get()[i] +
                     fs[3].get()[i] +
                     fs[4].get()[i] +
                     fs[5].get()[i] +
-                    fs[6].get()[i] +
-                    fs[7].get()[i];
+                    fs[6].get()[i];
         }
     }
 

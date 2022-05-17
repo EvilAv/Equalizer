@@ -23,34 +23,25 @@
         <Slider fx:id="soundSlider" layoutX="20.0" layoutY="69.0" max="1.3" min="0" orientation="HORIZONTAL" rotate="0" value="0.65">
         </Slider>
 
-        <Label fx:id="ef" layoutX="14.0" layoutY="157.0" text="Choose effect:" />
-        <CheckBox layoutX="24.0" layoutY="188.0" onAction="#chorusBox" text="Delay" />
-        <CheckBox layoutX="24.0" layoutY="208.0" onAction="#distBox" text="Vibrato" />
-        <Slider fx:id="vibratoSlider" layoutX="180.0" layoutY="201.0" max="7" maxWidth="110" min="0" rotate="0" value="1.0">
-        </Slider>
         <HBox layoutX="366.0" layoutY="42.0" prefHeight="20" prefWidth="802.0">
             <children>
-                <Label prefWidth="100.0" text="0-100 Hz" />
                 <Label prefWidth="100" text="100-258 Hz" />
                 <Label prefWidth="100" text="258-602 Hz" />
                 <Label prefWidth="100" text="602-1290 Hz" />
                 <Label prefWidth="100" text="1290-2666 Hz" />
                 <Label prefWidth="100" text="2666-5418 Hz" />
                 <Label prefWidth="100" text="5418-10922 Hz" />
-                <Label prefWidth="100" text="10922 -21930  Hz" />
 
             </children>
         </HBox>
         <HBox layoutX="349.0" layoutY="67.0" prefHeight="166.0" prefWidth="829.0">
             <children>
-                <Slider fx:id="Slider0" max="0" min="-40" orientation="VERTICAL" prefWidth="100" value="0" showTickLabels="true" showTickMarks="true" majorTickUnit="10"/>
                 <Slider fx:id="Slider1" max="0" min="-40" orientation="VERTICAL" prefWidth="100" value="0" showTickLabels="true" showTickMarks="true" majorTickUnit="10"/>
                 <Slider fx:id="Slider2" max="0" min="-40" orientation="VERTICAL" prefWidth="100" value="0" showTickLabels="true" showTickMarks="true" majorTickUnit="10"/>
                 <Slider fx:id="Slider3" max="0" min="-40" orientation="VERTICAL" prefWidth="100" value="0" showTickLabels="true" showTickMarks="true" majorTickUnit="10"/>
                 <Slider fx:id="Slider4" max="0" min="-40" orientation="VERTICAL" prefWidth="100" value="0" showTickLabels="true" showTickMarks="true" majorTickUnit="10"/>
                 <Slider fx:id="Slider5" max="0" min="-40" orientation="VERTICAL" prefWidth="100" value="0" showTickLabels="true" showTickMarks="true" majorTickUnit="10"/>
                 <Slider fx:id="Slider6" max="0" min="-40" orientation="VERTICAL" prefWidth="100" value="0" showTickLabels="true" showTickMarks="true" majorTickUnit="10"/>
-                <Slider fx:id="Slider7" max="0" min="-40" orientation="VERTICAL" prefWidth="100" value="0" showTickLabels="true" showTickMarks="true" majorTickUnit="10"/>
 
             </children>
 
