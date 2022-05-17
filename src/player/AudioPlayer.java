@@ -1,7 +1,5 @@
 package player;
 
-import effects.Delay;
-import effects.Vibrato;
 import equalizer.Equalizer;
 
 import javax.sound.sampled.*;
@@ -24,12 +22,6 @@ public class AudioPlayer implements LineListener{
     private final FFT fourierInput;
     public FFT fourierOutput;
 
-    private final Delay delay;
-    private boolean isDelay;
-
-    private final Vibrato vibrato;
-    private double vibratoCoef;
-    private boolean isVibrato;
 
     private final Equalizer equalizer;
     private boolean pause;
@@ -48,13 +40,6 @@ public class AudioPlayer implements LineListener{
         this.ais = readFile.getAudioInputStream();
         this.buff = new byte[this.BUFF_SIZE];
         this.sampleBuff = new short[BUFF_SIZE / 2];
-        // инициализируем эффекты
-        this.delay = new Delay();
-        this.vibrato = new Vibrato();
-        // отключаем эффекты, чтобы изначально воспроизводить чисытй звук
-        this.isDelay = false;
-        this.isVibrato = false;
-        this.vibratoCoef = 1.0;
         // инициализируем класс эквалайзера
         this.equalizer = new Equalizer(BUFF_SIZE / 2);
         AudioFileFormat aff = new AudioFileFormat();
@@ -83,12 +68,6 @@ public class AudioPlayer implements LineListener{
                 this.fourierInput.FFTAnalysis(this.sampleBuff, 512);
                 if(this.pause) {this.stop();}
 
-                if(this.isDelay)
-                    this.delay(this.sampleBuff);
-
-                if(this.isVibrato) {
-                    this.vibrato(sampleBuff);
-                }
 
                 equalizer.setInputSignal(this.sampleBuff);
                 this.equalizer.equalization();
@@ -108,45 +87,6 @@ public class AudioPlayer implements LineListener{
         }catch (LineUnavailableException | IOException | InterruptedException | ExecutionException e) {
         }
     }
-
-    // задаем эффект Дилей
-    private void delay(short[] inputSamples) {
-        this.delay.setInputSampleStream(inputSamples);
-        this.delay.createEffect();
-    }
-
-    // проверяем активен ли эффект Дилей
-    public boolean delayIsActive() {
-        return this.isDelay;
-    }
-
-    // отключаем/подключаем эффект Дилей
-    public void setDelay(boolean b) {
-        this.isDelay = b;
-    }
-
-    // задаем эффект Вибрато
-    private void vibrato(short[] inputSamples) {
-        this.vibrato.setVibratoCoef(this.vibratoCoef);
-        this.vibrato.setInputSampleStream(inputSamples);
-        this.vibrato.createEffect();
-    }
-
-    // проверяем активен ли эффект Вибрато
-    public boolean vibratoIsActive() {
-        return this.isVibrato;
-    }
-
-    // отключаем/подключаем эффект Вибрато
-    public void setVibrato(boolean b) {
-        this.isVibrato = b;
-    }
-
-    // задаем коэффициент для эффекта Вибрато
-    public void setVibratoCoef(double c) {
-        this.vibratoCoef = c;
-    }
-
 
     // присотанавливаем воспроизведение
     private void stop() {
