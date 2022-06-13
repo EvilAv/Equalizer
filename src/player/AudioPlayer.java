@@ -15,6 +15,7 @@ public class AudioPlayer implements LineListener{
     private final SourceDataLine sourceDataLine;
     private final AudioInputStream ais;
     private final byte[] buff;
+    private final RingBuf ring;
 
     public boolean isCalculated = false;
     private final int BUFF_SIZE = 65536;
@@ -64,6 +65,7 @@ public class AudioPlayer implements LineListener{
         this.volume = 1.0;
         this.fourierInput = new FFT();
         this.fourierOutput = new FFT();
+        this.ring = new RingBuf(BUFF_SIZE);
     }
 
 
@@ -73,8 +75,21 @@ public class AudioPlayer implements LineListener{
             this.sourceDataLine.open(this.format);
             this.sourceDataLine.start();
             this.pause = false;
-            while ((this.ais.read(this.buff, 0, this.BUFF_SIZE)) != -1) {
-                // используем кольцевой буффер для хранения отсчетов
+            int temp = 0;
+            while (temp != -1){
+                // запись в кольцевой буфер
+                while (!ring.isFull()) {
+                    temp = this.ais.read();
+                    if (temp == -1)
+                        break;
+                    this.ring.push((byte) temp);
+                }
+                // чтение из кольцевого буфера
+                int i = 0;
+                while (!ring.isEmpty()) {
+                    this.buff[i] = ring.pop();
+                    i++;
+                }
                 this.ByteArrayToSamplesArray();
 
                 //отрисовка без изменения sampleBuff
@@ -101,11 +116,15 @@ public class AudioPlayer implements LineListener{
                 this.SampleArrayByteArray();
                 // преобразуем измененный сигнал в байты и воспроизводим
                 sourceDataLine.write(this.buff, 0, this.buff.length - 0 );
-            } System.out.println("END");
+
+            }
+            System.out.println("END");
             this.isCalculated = false;
             this.sourceDataLine.drain();
             this.sourceDataLine.close();
         }catch (LineUnavailableException | IOException | InterruptedException | ExecutionException e) {
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
